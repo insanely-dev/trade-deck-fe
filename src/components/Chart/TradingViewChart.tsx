@@ -270,7 +270,7 @@ const TradingViewChart: React.FC<TradingViewChartProps> = ({
       (series as ISeriesApi<"Candlestick">).update(lastCandleDataRef.current);
     } else {
       (series as ISeriesApi<"Line">).update({
-        time: currentTimeGMTSeconds as Time,
+        time: candleTime as Time,
         value: liveValue,
       });
     }
