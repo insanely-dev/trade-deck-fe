@@ -90,7 +90,19 @@ const ChartContainer: React.FC = () => {
       const candleData = response.data.data;
       if (!candleData || candleData.length === 0) return [];
 
-      return candleData;
+      // Convert time property to Unix timestamp in seconds for lightweight-charts
+      return candleData.map((candle: any) => ({
+        ...candle,
+        time: typeof candle.time === 'object' && candle.time instanceof Date
+          ? Math.floor(candle.time.getTime() / 1000)
+          : typeof candle.time === 'string'
+          ? Math.floor(new Date(candle.time).getTime() / 1000)
+          : typeof candle.time === 'number'
+          ? candle.time > 1000000000000 // If timestamp is in milliseconds
+            ? Math.floor(candle.time / 1000)
+            : candle.time
+          : Math.floor(Date.now() / 1000) // Fallback to current time
+      }));
     } catch (error) {
       console.error("Error fetching chart data:", error);
       toast.error("Failed to fetch chart data");
