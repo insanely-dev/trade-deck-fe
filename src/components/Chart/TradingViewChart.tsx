@@ -240,9 +240,7 @@ const TradingViewChart: React.FC<TradingViewChartProps> = ({
 
     if (liveValue === undefined || liveValue === null) return;
 
-    const istOffsetMinutes = 5.5 * 60;
-    const currentTimeIST = Date.now() + istOffsetMinutes * 60 * 1000 + 50;
-    const currentTimeGMTSeconds = Math.floor(currentTimeIST / 1000);
+    const currentTimeGMTSeconds = Math.floor(Date.now() / 1000);
     const candleTime = currentTimeGMTSeconds - (currentTimeGMTSeconds % 60);
 
     if (chartType === "candlestick") {
