@@ -391,6 +391,18 @@ const TradingViewChart: React.FC<TradingViewChartProps> = ({
       });
       candleSeries.setData(transformedData as CandlestickData[]);
       candleSeriesRef.current = candleSeries;
+      
+      // Initialize lastCandleDataRef with the last data point for candlestick charts
+      if (transformedData.length > 0) {
+        const lastCandle = transformedData[transformedData.length - 1] as CandlestickData;
+        lastCandleDataRef.current = {
+          time: lastCandle.time,
+          open: lastCandle.open,
+          high: lastCandle.high,
+          low: lastCandle.low,
+          close: lastCandle.close,
+        };
+      }
     } else {
       const lineSeries = chartRef.current.addLineSeries({
         color: "#3b82f6",
@@ -398,6 +410,9 @@ const TradingViewChart: React.FC<TradingViewChartProps> = ({
       });
       lineSeries.setData(transformedData as LineData[]);
       lineSeriesRef.current = lineSeries;
+      
+      // Reset lastCandleDataRef for line charts as it's not relevant
+      lastCandleDataRef.current = null;
     }
 
     chartRef.current.timeScale().fitContent();
